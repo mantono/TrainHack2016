@@ -19,7 +19,7 @@ public class Controller
 	}
 	
 	@Resource("/stop/%stopStart/dest/%stopDest")
-	public static Response dataForStop(final int stopStart, final int stopDest) throws IOException, ParseException
+	public static Response dataForStop(final int stopStart, final String stopDest) throws IOException, ParseException
 	{
 		final Rss rssData = TraficDataCollector.getTraficDataAsRss(stopStart, stopDest);
 		return new XmlResponse(rssData.toXml());

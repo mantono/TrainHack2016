@@ -20,7 +20,7 @@ import com.torbacka.trainhack.model.Rss;
  */
 public class TraficDataCollector {
     private static final String BASE_URL = "https://api.resrobot.se/v2/departureBoard?key=15708608-3e9f-46fe-a996-4d0af82de95e&maxJourneys=50&passlist=0&format=json&id=";
-    private static final String LOOKUP_URL = "https://api.resrobot.se/v2/location.name?key=ebffa80d-b41b-4469-96f4-31d90c73f790&format=xml&&input="
+    private static final String LOOKUP_URL = "https://api.resrobot.se/v2/location.name?key=ebffa80d-b41b-4469-96f4-31d90c73f790&format=json&&input=";
     private static final String KEY = "15708608-3e9f-46fe-a996-4d0af82de95e";
 
     public static Rss getTraficDataAsRss(int stopId) throws IOException, ParseException {
@@ -65,7 +65,7 @@ public class TraficDataCollector {
         return rss;
     }
 
-    public static Rss getTraficDataAsRss(int stopStart, int stopDest) throws IOException, ParseException {
+    public static Rss getTraficDataAsRss(int stopStart, String stopDest) throws IOException, ParseException {
 
 
         URL oracle = new URL(BASE_URL + stopStart);
@@ -98,10 +98,13 @@ public class TraficDataCollector {
                 } else {
                     guid = new URL("http://samtrafiken.se");
                 }
-                final int stopDestApi = getDesitnaNameForId(title);
-                if (stopDestApi!=stopDest) {
+
+                if (!title.toLowerCase().contains(stopDest.toLowerCase())) {
+                	System.out.println("\""+title+"\"" + " is not a match"); 
                     continue;
                 }
+                else
+                	System.out.println("\t**** \""+title+"\"" + " MATCHES ****");
                 final Item item = new Item(guid, date, time, title, desc);
                 items.add(item);
             }
@@ -114,28 +117,5 @@ public class TraficDataCollector {
 
         in.close();
         return rss;
-    }
-
-    private static int getDesitnaNameForId(String direction) {
-        URL oracle = new URL(LOOKUP_URL + stopStart);
-        URLConnection yc = oracle.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                        yc.getInputStream()));
-
-        String inputLine;
-        StringBuffer output = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            output.append(inputLine);
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.readTree(output.toString());
-        JsonNode stopLocation = rootNode.get("StopLocation");
-
-        int stopDest = stopLocation.get("name").asText();
-
-
-        return stopDest;
     }
 }
