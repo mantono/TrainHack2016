@@ -58,8 +58,6 @@ public class TraficDataCollector {
             }
         }
 
-        //System.out.println(departure.size());
-
         final Channel channel = new Channel("En fin titel", "http://google.se", items);
         Rss rss = new Rss("2.0", channel);
 
@@ -69,7 +67,7 @@ public class TraficDataCollector {
 
     public static Rss getTraficDataAsRss(int stopStart, int stopDest) throws IOException, ParseException {
 
-        final String destinatioName = getDesitnaNameForId(stopDest);
+
         URL oracle = new URL(BASE_URL + stopStart);
         URLConnection yc = oracle.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -89,9 +87,7 @@ public class TraficDataCollector {
             for (JsonNode node : departures) {
                 System.out.println(node.get("stopid").asText());
                 final String title = node.get("direction").asText();
-                if (!title.equals(destinatioName)) {
-                    continue;
-                }
+
                 final String desc = node.get("name").asText();
                 final String date = node.get("date").asText();
                 final String time = node.get("time").asText();
@@ -101,6 +97,10 @@ public class TraficDataCollector {
                     guid = new URL(node.get("Product").get("operatorUrl").asText());
                 } else {
                     guid = new URL("http://samtrafiken.se");
+                }
+                final int stopDestApi = getDesitnaNameForId(title);
+                if (stopDestApi!=stopDest) {
+                    continue;
                 }
                 final Item item = new Item(guid, date, time, title, desc);
                 items.add(item);
