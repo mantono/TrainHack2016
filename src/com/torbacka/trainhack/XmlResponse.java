@@ -47,7 +47,7 @@ public class XmlResponse implements Response {
 		
 		header.set(HeaderField.DATE, LocalDateTime.now().toString());
 		header.set(HeaderField.SERVER, "REST-in-Peace");
-		header.set(HeaderField.CONTENT_LENGTH, "" + (body.length()+4));
+		header.set(HeaderField.CONTENT_LENGTH, "" + (body.length()+6));
 		header.set(HeaderField.CONTENT_TYPE, "application/xml; charset=utf-8");
 		
 		return header;

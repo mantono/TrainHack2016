@@ -1,6 +1,7 @@
 package com.torbacka.trainhack;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import com.mantono.webserver.WebPage;
 import com.mantono.webserver.rest.Resource;
@@ -23,7 +24,7 @@ public class Controller
 	}
 	
 	@Resource("/stop/%id")
-	public static Response dataForStop(final int id) throws IOException
+	public static Response dataForStop(final int id) throws IOException, ParseException
 	{
 		final Rss rssData = TraficDataCollector.getTraficDataAsRss(id);
 		return new XmlResponse(rssData.toXml());

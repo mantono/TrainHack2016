@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class TraficDataCollector {
                     "<title>Avgångstavlan</title>" +
                     "<link>http://localhost/avgangstavlan?locationId=7400000001</link>" ;
 
-    public static Rss getTraficDataAsRss(int stopId) throws IOException {
+    public static Rss getTraficDataAsRss(int stopId) throws IOException, ParseException {
         URL oracle = new URL(BASE_URL);
         URLConnection yc = oracle.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(
