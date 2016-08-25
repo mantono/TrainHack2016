@@ -19,6 +19,14 @@ public class Controller
 		return new WebPage("<html><body>HEJ "+id+"!<body></html>");
 	}
 	
+	@Resource("/stop/%id")
+	public static Response dataForStop(final int id)
+	{
+		// Make magic API requests here!
+		Rss rssData;
+		return new XmlResponse(rssData.toXml());
+	}
+	
 	@Resource(verb = Verb.POST, value = "/test/%user/%password")
 	public static Response test2(final String user, final String password)
 	{
