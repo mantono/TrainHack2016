@@ -8,14 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Item {
-	private final String description;
+	private final String title;
 	private final Date pubdate;
 	private final URL guid;
 
-	public Item(final URL guid, final String date, final String time, final String description) throws ParseException {
+	public Item(final URL guid, final String date, final String time, final String title) throws ParseException {
 		this.guid = guid;
 		this.pubdate = createLocalDateTime(date, time);
-		this.description = description;
+		this.title = title;
 	}
 	
 	private Date createLocalDateTime(String date, String time) throws ParseException {
@@ -28,7 +28,7 @@ public class Item {
 	public String toXml(){
 		final StringBuilder content = new StringBuilder();
 		content.append("<item>\n");
-		content.append("\t<description>"+description+"</description>\n");
+		content.append("\t<title>"+title+"</title>\n");
 		final SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 		final String date = formatter.format(pubdate);
 		//final String date = DateTimeFormatter.RFC_1123_DATE_TIME.format(pubdate);

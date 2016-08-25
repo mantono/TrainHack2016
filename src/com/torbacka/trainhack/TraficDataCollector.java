@@ -46,16 +46,16 @@ public class TraficDataCollector {
         if(departures.isArray()) {
             for (JsonNode node : departures) {
                 System.out.println(node.get("stopid").asText());
-                final String desc = node.get("direction").asText();
+                final String title = node.get("direction").asText();
                 final String date = node.get("date").asText();
                 final String time = node.get("time").asText();
                 final JsonNode url = node.get("Product").get("operatorUrl");
                 URL guid;
-                if(!url.isNull())
+                if(url != null)
                 	guid = new URL(node.get("Product").get("operatorUrl").asText());
                 else
                 	guid = new URL("http://samtrafiken.se");
-                final Item item = new Item(guid, date, time, desc);
+                final Item item = new Item(guid, date, time, title);
                 items.add(item);                
             }
         }
