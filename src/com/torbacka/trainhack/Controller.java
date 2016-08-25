@@ -30,9 +30,10 @@ public class Controller
 		return new XmlResponse(rssData.toXml());
 	}
 	
-	@Resource(verb = Verb.POST, value = "/test/%user/%password")
-	public static Response test2(final String user, final String password)
+	@Resource("/stop/%stopStart/dest/%stopDest")
+	public static Response dataForStop(final int stopStart, final int stopDest) throws IOException, ParseException
 	{
-		return new WebPage("<html><body>HEJ!<body></html>");
+		final Rss rssData = TraficDataCollector.getTraficDataAsRss(stopStart, stopDest);
+		return new XmlResponse(rssData.toXml());
 	}
 }
