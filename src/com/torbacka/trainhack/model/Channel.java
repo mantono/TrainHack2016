@@ -1,4 +1,6 @@
-package com.torbacka.model;
+package com.torbacka.trainhack.model;
+
+import java.util.List;
 
 /**
  * Created by Taco on 2016-08-25.
@@ -34,7 +36,7 @@ public class Channel {
         StringBuilder builder = new StringBuilder();
         builder.append(  "<channel><title>" +title + "</title><link>" +link +"</link>");
         for(Item item : items) {
-            builder.append(item.toXML());
+            builder.append(item.toXml());
         }
         builder.append("</channel>");
         return builder.toString();

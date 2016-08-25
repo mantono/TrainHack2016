@@ -1,9 +1,12 @@
 package com.torbacka.trainhack;
 
+import java.io.IOException;
+
 import com.mantono.webserver.WebPage;
 import com.mantono.webserver.rest.Resource;
 import com.mantono.webserver.rest.Response;
 import com.mantono.webserver.rest.Verb;
+import com.torbacka.trainhack.model.Rss;
 
 public class Controller
 {
@@ -20,10 +23,9 @@ public class Controller
 	}
 	
 	@Resource("/stop/%id")
-	public static Response dataForStop(final int id)
+	public static Response dataForStop(final int id) throws IOException
 	{
-		// Make magic API requests here!
-		Rss rssData;
+		final Rss rssData = TraficDataCollector.getTraficDataAsRss(id);
 		return new XmlResponse(rssData.toXml());
 	}
 	

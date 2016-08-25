@@ -1,4 +1,4 @@
-package com.torbacka.model;
+package com.torbacka.trainhack.model;
 
 /**
  * Created by Taco on 2016-08-25.
@@ -28,7 +28,7 @@ public class Rss {
         this.channel = channel;
     }
 
-    public String toXML(){
+    public String toXml(){
         return "<rss version=\""+version+"\">" + channel.toXML() + "</rss>";
     }
 }

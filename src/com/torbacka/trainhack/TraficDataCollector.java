@@ -1,4 +1,4 @@
-package com.torbacka.business;
+package com.torbacka.trainhack;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,10 +8,11 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.torbacka.model.Departure;
-import com.torbacka.model.Rss;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.torbacka.trainhack.model.Channel;
+import com.torbacka.trainhack.model.Item;
+import com.torbacka.trainhack.model.Rss;
 
 /**
  * Created by Taco on 2016-08-25.
@@ -25,7 +26,7 @@ public class TraficDataCollector {
                     "<title>Avgångstavlan</title>" +
                     "<link>http://localhost/avgangstavlan?locationId=7400000001</link>" ;
 
-    public Rss getTraficDataAsRss(int stopId) throws IOException {
+    public static Rss getTraficDataAsRss(int stopId) throws IOException {
         URL oracle = new URL(BASE_URL);
         URLConnection yc = oracle.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -40,18 +41,26 @@ public class TraficDataCollector {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(output.toString());
         JsonNode departures = rootNode.get("Departure");
+        List<Item> items = new ArrayList<Item>();
         if(departures.isArray()) {
             for (JsonNode node : departures) {
                 System.out.println(node.get("stopid").asText());
+                final String desc = node.get("direction").asText();
+                final String date = node.get("date").asText();
+                final String time = node.get("time").asText();
+                final URL guid = new URL(node.get("Product").get("operatorUrl").asText());
+                final Item item = new Item(guid, date, time, desc);
+                items.add(item);                
             }
         }
 
         //System.out.println(departure.size());
 
-
+        final Channel channel = new Channel("En fin titel", "http://google.se", items);
+        Rss rss = new Rss("2.0", channel);
 
         in.close();
-        return null;
+        return rss;
     }
 
     private String buildUrl(int stopId) {
