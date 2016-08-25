@@ -27,12 +27,14 @@ public class Item {
 
 	public String toXml(){
 		final StringBuilder content = new StringBuilder();
+		content.append("<item>\n");
 		content.append("\t<description>"+description+"</description>\n");
 		final SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
 		final String date = formatter.format(pubdate);
 		//final String date = DateTimeFormatter.RFC_1123_DATE_TIME.format(pubdate);
 		content.append("\t<pubdate>"+date+"</pubdate>\n");
 		content.append("\t<guid>"+guid+"</guid>\n");
+		content.append("</item>\n");
 		
 		return content.toString();
 	}

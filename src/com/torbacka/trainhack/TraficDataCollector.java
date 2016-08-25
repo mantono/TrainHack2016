@@ -19,13 +19,13 @@ import com.torbacka.trainhack.model.Rss;
  * Created by Taco on 2016-08-25.
  */
 public class TraficDataCollector {
-    private static final String BASE_URL = "https://api.resrobot.se/v2/departureBoard?key=15708608-3e9f-46fe-a996-4d0af82de95e&id=740000001&maxJourneys=5&passlist=0&format=json";
+    private static final String BASE_URL = "https://api.resrobot.se/v2/departureBoard?key=15708608-3e9f-46fe-a996-4d0af82de95e&id=740000001&maxJourneys=25&passlist=0&format=json";
     private static final String KEY = "15708608-3e9f-46fe-a996-4d0af82de95e";
     private static final String BASE_RSS = "<?xml version=\"1.0\"?>\n" +
                     "<rss version=\"2.0\">\n" +
                     "<channel>" +
                     "<title>Avgångstavlan</title>" +
-                    "<link>http://localhost/avgangstavlan?locationId=7400000001</link>" ;
+                    "<link>http://localhost/avgangstavlan?locationId=7400000001</link>\n" ;
 
     public static Rss getTraficDataAsRss(int stopId) throws IOException, ParseException {
         URL oracle = new URL(BASE_URL);
@@ -49,7 +49,12 @@ public class TraficDataCollector {
                 final String desc = node.get("direction").asText();
                 final String date = node.get("date").asText();
                 final String time = node.get("time").asText();
-                final URL guid = new URL(node.get("Product").get("operatorUrl").asText());
+                final JsonNode url = node.get("Product").get("operatorUrl");
+                URL guid;
+                if(!url.isNull())
+                	guid = new URL(node.get("Product").get("operatorUrl").asText());
+                else
+                	guid = new URL("http://samtrafiken.se");
                 final Item item = new Item(guid, date, time, desc);
                 items.add(item);                
             }

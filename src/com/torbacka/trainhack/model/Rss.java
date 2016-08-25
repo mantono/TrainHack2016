@@ -29,6 +29,6 @@ public class Rss {
     }
 
     public String toXml(){
-        return "<rss version=\""+version+"\">" + channel.toXML() + "</rss>";
+        return "<xml version=\"1.0\">\n<rss version=\""+version+"\">" + channel.toXML() + "</rss>\n</xml>";
     }
 }
